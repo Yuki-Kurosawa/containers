@@ -13,7 +13,9 @@
 # This image is intended for jobs that compile the source code and as a general
 # purpose image. It contains the toolchains for all supported architectures, and
 # all build dependencies.
-FROM ubuntu:22.04 AS build
+FROM ubuntu:24.04 AS build
+
+RUN userdel -r ubuntu
 
 # Set the EDKREPO URL (and version)
 ENV EDKREPO_URL=https://github.com/tianocore/edk2-edkrepo/releases/download/edkrepo-v2.1.2/edkrepo-2.1.2.tar.gz
@@ -24,12 +26,12 @@ ENV DEBIAN_FRONTEND=noninteractive
 # Set timezone.
 ENV TZ=UTC
 
-ENV GCC_MAJOR_VERSION=12
+ENV GCC_MAJOR_VERSION=14
 
 # Preinstall python + dependencies as virtual environment
 RUN apt-get update && \
     apt-get install --yes --no-install-recommends \
-      python3 \
+      python3 python3-venv\
       virtualenv
 RUN virtualenv /opt/venv
 ENV VIRTUAL_ENV /opt/venv
@@ -72,9 +74,10 @@ RUN apt-get update && \
 
 RUN \
     update-alternatives \
-      --install /usr/bin/python python /usr/bin/python3.10 1 &&\
+      --install /usr/bin/python python /usr/bin/python3.12 1 &&\
     update-alternatives \
-      --install /usr/bin/python3 python3 /usr/bin/python3.10 1 &&\
+      --install /usr/bin/python3 python3 /usr/bin/python3.12 1 &&\
+    rm -rvf /etc/alternatives/cpp && \
     update-alternatives \
       --install /usr/bin/gcc gcc /usr/bin/gcc-${GCC_MAJOR_VERSION} 100 \
       --slave /usr/bin/g++ g++ /usr/bin/g++-${GCC_MAJOR_VERSION} \
@@ -142,7 +145,7 @@ COPY init_edkrepo_conf.sh /usr/bin/init_edkrepo_conf
 
 #Building qemu from source:
 FROM build AS test
-ARG QEMU_URL="https://download.qemu.org/qemu-7.1.0.tar.xz"
+ARG QEMU_URL="https://download.qemu.org/qemu-9.1.1.tar.xz"
 RUN apt-get update && apt-get install --yes --no-install-recommends \
         autoconf \
         automake \
@@ -157,7 +160,7 @@ RUN apt-get update && apt-get install --yes --no-install-recommends \
         tar && \
     mkdir -p qemu-build && cd qemu-build && \
     wget  "${QEMU_URL}" && \
-    tar -xf qemu-7.1.0.tar.xz --strip-components=1 && \
+    tar -xf qemu-9.1.1.tar.xz --strip-components=1 && \
     ./configure --target-list=x86_64-softmmu,arm-softmmu,aarch64-softmmu,riscv32-softmmu,riscv32-linux-user,riscv64-linux-user,riscv64-softmmu && \
     make install -j $(nproc) && \
     cd .. && \
@@ -185,5 +188,5 @@ RUN apt-get update && \
     apt-get clean
 
 # Setup the entry point
-COPY ubuntu22_dev_entrypoint.sh /usr/libexec/entrypoint
+COPY ubuntu24_dev_entrypoint.sh /usr/libexec/entrypoint
 ENTRYPOINT ["/usr/libexec/entrypoint"]
