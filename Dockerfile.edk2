@@ -1,0 +1,10 @@
+FROM yukikurosawadev/edk2:noble-dev
+
+RUN cd /mnt && \
+  git clone --recursive https://github.com/tianocore/edk2.git edk2 && \
+  cd edk2 && \
+  git checkout edk2-stable202408 && \
+  cd .. && \
+  git clone https://github.com/Yuki-Kurosawa/YukiUEFI.git YukiPkg
+
+ENTRYPOINT ["/usr/libexec/entrypoint"]
