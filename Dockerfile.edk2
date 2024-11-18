@@ -7,4 +7,9 @@ RUN cd /mnt && \
   cd .. && \
   git clone https://github.com/Yuki-Kurosawa/YukiUEFI.git YukiPkg
 
+RUN cat /etc/sudoers | sed -re 's/(%sudo.*)\sALL$/\1 NOPASSWD:ALL/g' > /etc/sudoers.new && \
+  rm -rf /etc/sudoers && \
+  cp /etc/sudoers.new /etc/sudoers && \
+  chmod 0440 /etc/sudoers
+
 ENTRYPOINT ["/usr/libexec/entrypoint"]
