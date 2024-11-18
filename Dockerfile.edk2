@@ -12,4 +12,6 @@ RUN cat /etc/sudoers | sed -re 's/(%sudo.*)\sALL$/\1 NOPASSWD:ALL/g' > /etc/sudo
   cp /etc/sudoers.new /etc/sudoers && \
   chmod 0440 /etc/sudoers
 
+COPY initenv.sh /usr/bin/initedkenv
+
 ENTRYPOINT ["/usr/libexec/entrypoint"]
