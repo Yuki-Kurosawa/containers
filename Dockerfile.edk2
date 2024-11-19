@@ -5,7 +5,7 @@ RUN cd /mnt && \
   cd edk2 && \
   git checkout edk2-stable202408 && \
   cd .. && \
-  git clone https://github.com/Yuki-Kurosawa/YukiUEFI.git YukiPkg
+  git clone --recursive https://github.com/Yuki-Kurosawa/YukiUEFI.git YukiPkg
 
 RUN cat /etc/sudoers | sed -re 's/(%sudo.*)\sALL$/\1 NOPASSWD:ALL/g' > /etc/sudoers.new && \
   rm -rf /etc/sudoers && \

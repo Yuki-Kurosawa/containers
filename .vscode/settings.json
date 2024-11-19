@@ -1,0 +1,14 @@
+{
+    "files.associations": {
+        "fstream": "c",
+        "limits": "c",
+        "sstream": "c",
+        "gzguts.h": "c",
+        "stdio.h": "c",
+        "*.tcc": "c",
+        "iosfwd": "c",
+        "istream": "c",
+        "stop_token": "c",
+        "streambuf": "c"
+    }
+}

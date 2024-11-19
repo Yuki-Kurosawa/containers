@@ -26,7 +26,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 # Set timezone.
 ENV TZ=UTC
 
-ENV GCC_MAJOR_VERSION=14
+ENV GCC_MAJOR_VERSION=13
 
 # Preinstall python + dependencies as virtual environment
 RUN apt-get update && \
@@ -184,6 +184,7 @@ RUN apt-get update && \
         llvm \
         nano \
         vim \
+        cmake \
         && \
     apt-get clean
 

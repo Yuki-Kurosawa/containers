@@ -14,5 +14,11 @@ if [ ! -f $HOME/edk2/Conf/target.txt ];then
     . edksetup.sh
 fi
 
+if [ ! -h $HOME/edk2/StdLib ];then
+    cd $HOME/edk2
+    ln -s YukiPkg/Libs/libc/StdLib StdLib
+    ln -s YukiPkg/Libs/libc/StdLibPrivateInternalFiles StdLibPrivateInternalFiles
+fi
+
 cd $HOME/edk2
 . edksetup.sh BaseTools
