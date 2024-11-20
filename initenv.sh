@@ -20,5 +20,12 @@ if [ ! -h $HOME/edk2/StdLib ];then
     ln -s YukiPkg/Libs/libc/StdLibPrivateInternalFiles StdLibPrivateInternalFiles
 fi
 
+if [ ! -f $HOME/YukiPkg/Libs/libjpeg-turbo/jconfig.h ];then
+    cd $HOME/YukiPkg/Libs/libjpeg-turbo
+    cmake -G"Unix Makefiles" -DWITH_SIMD=0 -DWITH_JPEG8=1
+    make
+fi
+
 cd $HOME/edk2
 . edksetup.sh BaseTools
+
