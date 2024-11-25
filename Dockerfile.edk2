@@ -1,6 +1,6 @@
 FROM yukikurosawadev/edk2:noble-dev
 
-ENV EDK2_VERSION=202408
+ENV EDK2_VERSION=202411
 
 RUN cd /mnt && \
   git clone --recursive https://github.com/tianocore/edk2.git edk2 && \
