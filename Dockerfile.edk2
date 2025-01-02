@@ -3,9 +3,10 @@ FROM yukikurosawadev/edk2:noble-dev
 ENV EDK2_VERSION=202411
 
 RUN cd /mnt && \
-  git clone --recursive https://github.com/tianocore/edk2.git edk2 && \
+  git clone https://github.com/tianocore/edk2.git edk2 && \
   cd edk2 && \
   git checkout edk2-stable${EDK2_VERSION} && \
+  git submodule update --init --recursive && \
   cd .. && \
   git clone --recursive https://github.com/Yuki-Kurosawa/YukiUEFI.git YukiPkg
 
