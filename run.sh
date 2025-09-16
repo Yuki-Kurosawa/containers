@@ -1,6 +1,6 @@
 #! /bin/bash
 
 IMAGE=yukikurosawadev/edk2
-TAG=noble-dev
+TAG=noble-dev-202505
 
-docker run -it -v "$PWD/home":"$PWD/home" -e EDK2_DOCKER_USER_HOME="$PWD/home" $IMAGE:$TAG /bin/bash
+docker run -it -v "${HOME}":"${HOME}" -e EDK2_DOCKER_USER_HOME="${HOME}" $IMAGE:$TAG /bin/bash
