@@ -1,4 +1,4 @@
-FROM yukikurosawadev/edk2:noble-dev
+FROM yukikurosawadev/edk2:trixie-dev
 
 ENV EDK2_VERSION=202508
 

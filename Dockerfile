@@ -16,8 +16,6 @@
 # all build dependencies.
 FROM debian:trixie AS build
 
-RUN userdel -r ubuntu
-
 # Suppresses a debconf error during apt-get install.
 ENV DEBIAN_FRONTEND=noninteractive
 
@@ -41,7 +39,6 @@ RUN pip install --upgrade pip \
 # Install and update the package list
 RUN apt-get update && \
     apt-get install --yes --no-install-recommends \
-        software-properties-common \
         apt-utils \
         cryptsetup \
         apt-transport-https \
@@ -72,9 +69,9 @@ RUN apt-get update && \
 
 RUN \
     update-alternatives \
-      --install /usr/bin/python python /usr/bin/python3.12 1 &&\
+      --install /usr/bin/python python /usr/bin/python3.13 1 &&\
     update-alternatives \
-      --install /usr/bin/python3 python3 /usr/bin/python3.12 1 &&\
+      --install /usr/bin/python3 python3 /usr/bin/python3.13 1 &&\
     rm -rvf /etc/alternatives/cpp && \
     update-alternatives \
       --install /usr/bin/gcc gcc /usr/bin/gcc-${GCC_MAJOR_VERSION} 100 \
@@ -137,7 +134,7 @@ ENV LC_ALL en_US.UTF-8
 
 #Building qemu from source:
 FROM build AS test
-ARG QEMU_URL="https://download.qemu.org/qemu-9.1.1.tar.xz"
+ARG QEMU_URL="https://download.qemu.org/qemu-11.1.1.tar.xz"
 RUN apt-get update && apt-get install --yes --no-install-recommends \
         autoconf \
         automake \
@@ -152,7 +149,7 @@ RUN apt-get update && apt-get install --yes --no-install-recommends \
         tar && \
     mkdir -p qemu-build && cd qemu-build && \
     wget  "${QEMU_URL}" && \
-    tar -xf qemu-9.1.1.tar.xz --strip-components=1 && \
+    tar -xf qemu-11.1.1.tar.xz --strip-components=1 && \
     ./configure --target-list=x86_64-softmmu,arm-softmmu,aarch64-softmmu,riscv32-softmmu,riscv32-linux-user,riscv64-linux-user,riscv64-softmmu && \
     make install -j $(nproc) && \
     cd .. && \

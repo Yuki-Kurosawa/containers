@@ -1,5 +1,5 @@
 #! /bin/bash
 
 IMAGE=yukikurosawadev/edk2
-TAG=noble-dev
+TAG=trixie-dev
 docker build --tag $IMAGE:$TAG -f Dockerfile .
