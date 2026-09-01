@@ -14,12 +14,9 @@
 # This image is intended for jobs that compile the source code and as a general
 # purpose image. It contains the toolchains for all supported architectures, and
 # all build dependencies.
-FROM ubuntu:24.04 AS build
+FROM debian:trixie AS build
 
 RUN userdel -r ubuntu
-
-# Set the EDKREPO URL (and version)
-ENV EDKREPO_URL=https://github.com/tianocore/edk2-edkrepo/releases/download/edkrepo-v2.1.2/edkrepo-2.1.2.tar.gz
 
 # Suppresses a debconf error during apt-get install.
 ENV DEBIAN_FRONTEND=noninteractive
@@ -132,16 +129,6 @@ ENV LANG en_US.UTF-8
 ENV LANGUAGE en_US:en
 ENV LC_ALL en_US.UTF-8
 
-# Install edkrepo
-RUN mkdir /edkrepo_install && \
-    cd /edkrepo_install && \
-    wget -O- ${EDKREPO_URL} | tar zxvf - && \
-    ./install.py --no-prompt --user $(id -nu) && \
-    mkdir -p /etc/edkrepo_skel && \
-    cp -R /root/.edkrepo /etc/edkrepo_skel && \
-    rm -rf /edkrepo_install
-
-COPY init_edkrepo_conf.sh /usr/bin/init_edkrepo_conf
 
 # Test Image
 # This image is intended for jobs that run tests (and possibly also build)
